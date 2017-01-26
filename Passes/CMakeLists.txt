@@ -1,1 +1,2 @@
 add_subdirectory(testPass)
+add_subdirectory(part1)
