@@ -11,28 +11,26 @@ define i32 @_Z3fooj(i32) #0 {
   store volatile i32 10, i32* %3, align 4
   %4 = load volatile i32, i32* %2, align 4
   %5 = icmp ugt i32 %4, 5
-  call void @updateBranchInfo(i1 true)
+  call void @updateBranchInfo(i1 %5)
   br i1 %5, label %6, label %9
 
 ; <label>:6:                                      ; preds = %1
   %7 = load volatile i32, i32* %3, align 4
   %8 = add i32 %7, 5
   store volatile i32 %8, i32* %3, align 4
-  call void @updateBranchInfo(i1 false)
   br label %12
 
 ; <label>:9:                                      ; preds = %1
   %10 = load volatile i32, i32* %3, align 4
   %11 = add i32 %10, 50
   store volatile i32 %11, i32* %3, align 4
-  call void @updateBranchInfo(i1 false)
   br label %12
 
 ; <label>:12:                                     ; preds = %9, %6
   %13 = load volatile i32, i32* %3, align 4
   %14 = load volatile i32, i32* %2, align 4
   %15 = add i32 %13, %14
-  call void @updateBranchInfo(i1 false)
+  call void @printOutBranchInfo()
   ret i32 %15
 }
 

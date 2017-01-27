@@ -19,5 +19,3 @@ opt -load /LLVM_ROOT/build/lib/CSE231.so -cse231-bb < ./test1.ll -o ./test1-bb.b
 /LLVM_ROOT/build/bin/clang++ ./test1-bb.ll ./lib231.ll ./test1-main.ll -o ./bb_test1
 
 
-opt -load /LLVM_ROOT/build/lib/CSE231.so -cse231-csi < ./test1-c.ll > /dev/null
-/solution/opt -cse231-csi < ./test1-c.ll > /dev/null

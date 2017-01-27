@@ -21,32 +21,21 @@ namespace {
 
 			for(Module::iterator func = M.begin(); func != M.end(); func++){
 				for(Function::iterator block = func->begin(); block != func->end(); block++){
-					map<unsigned, unsigned> countMap;
+					TerminatorInst *term = block->getTerminator();
+					BranchInst *branchInst = (BranchInst*)(term);
 
-					TerminatorInst* term = block->getTerminator();
-					BranchInst* branchInst = (BranchInst*)(term);
-
-            		builder.SetInsertPoint(term);
+					builder.SetInsertPoint(term);
 					vector<Value *> argsV;
-
-					// Value *taken = branchInst->getCondition();
-					// argsV.push_back(taken);
-					// builder.CreateCall(countFunc, argsV);	
 
 					if (branchInst->isConditional()) {
 						vector<Value *> argsV;
-						Value *taken = ConstantInt::get(Type::getInt1Ty(M.getContext()), true);
+						Value *taken = branchInst->getCondition();
 						argsV.push_back(taken);
 						builder.CreateCall(countFunc, argsV);
-					} else {
-						vector<Value *> argsV;
-						Value *taken = ConstantInt::get(Type::getInt1Ty(M.getContext()), false);
-						argsV.push_back(taken);
-						builder.CreateCall(countFunc, argsV);	
 					}
 
 					for(BasicBlock::iterator it = block->begin(); it != block->end(); it++){
-						if(func->getName() == "main" && ((string)it->getOpcodeName()) == "ret"){
+						if(((string)it->getOpcodeName()) == "ret"){
 							builder.SetInsertPoint(func->back().getInstList().back().getPrevNode()->getNextNode());
 							vector<Value *> argsV;
 							builder.CreateCall(printFunc, argsV);

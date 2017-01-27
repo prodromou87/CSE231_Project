@@ -29,7 +29,7 @@ namespace {
 					countMap[bi->getOpcode()]++;
 				}
 
-					// insert count function
+				// insert count function
 				for(map<unsigned, unsigned>::iterator it = countMap.begin(); it != countMap.end(); it++){
 					vector<Value *> argsV;
 					Value* opCode = ConstantInt::get(Type::getInt32Ty(M->getContext()), it->first);
@@ -39,10 +39,9 @@ namespace {
 					builder.CreateCall(countFunc, argsV);
 				}
 
-          		//insert the print function
+          		// insert the print function
 				for(BasicBlock::iterator it = block->begin(); it != block->end(); it++){
 					if(((string)it->getOpcodeName()) == "ret"){
-						// builder.SetInsertPoint(F->back().getInstList().back().getPrevNode()->getNextNode());
 						vector<Value *> argsV;
 						builder.CreateCall(printFunc, argsV);
 					}

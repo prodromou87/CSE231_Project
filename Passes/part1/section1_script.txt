@@ -1,0 +1,4 @@
+opt -load /LLVM_ROOT/build/lib/CSE231.so -cse231-csi < ./test1-c.ll > /dev/null
+
+
+/solution/opt -cse231-csi < ./test1-c.ll > /dev/null
