@@ -1,0 +1,15 @@
+ret	1
+br	2
+add	2
+alloca	2
+load	4
+store	3
+icmp	1
+==================== 
+ret	1
+br	2
+add	2
+alloca	2
+load	4
+store	3
+icmp	1
