@@ -2,41 +2,58 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/IR/Module.h"
+#include "llvm/IR/IRBuilder.h"
+#include <map>
+#include <vector>
 
 using namespace llvm;
+using namespace std;
 
 namespace {
-	struct LLVMCountDynamic : public ModulePass {	
+	struct CountDynamicinstructions: public FunctionPass {
 		static char ID;
-		LLVMCountDynamic() : ModulePass(ID) {}
+		CountDynamicinstructions(): FunctionPass(ID){}
+		
+		bool runOnFunction(Function &F)   {
+			Module *M = F.getParent();
+			Function *countFunc = cast<Function>(M->getOrInsertFunction("updateMap", Type::getVoidTy(M->getContext()), Type::getInt32Ty(M->getContext()), Type::getInt32Ty(M->getContext()), NULL));
+			Function *printFunc = cast<Function>(M->getOrInsertFunction("printOutInstrInfo", Type::getVoidTy(M->getContext()), NULL));
 
-		bool runOnModule(Module &M) override {
-			std::map<std::string, int> map;
-			int count = 0;
+			for(Function::iterator block = F.begin(); block != F.end(); block++){
+				map<unsigned, unsigned> countMap;
 
-			for (Module::iterator mi = M.begin(), me = M.end(); mi != me; mi++) {
-				for (Function::iterator fi = mi->begin(), fe = mi->end(); fi != fe; fi++) {
-					for (BasicBlock::iterator bi = fi->begin(), be = fi->end(); bi != be; bi++) {
-						count++;
-						// add into the map
-						// errs() << bi->getOpcodeName() << "\n";
-						map[bi->getOpcodeName()]++;
+				TerminatorInst* term = block->getTerminator();
+				IRBuilder<> builder(term);
+
+				for(BasicBlock::iterator bi = block->begin(); bi != block->end(); bi++){
+					countMap[bi->getOpcode()]++;
+				}
+
+					// insert count function
+				for(map<unsigned, unsigned>::iterator it = countMap.begin(); it != countMap.end(); it++){
+					vector<Value *> argsV;
+					Value* opCode = ConstantInt::get(Type::getInt32Ty(M->getContext()), it->first);
+					Value* opCount = ConstantInt::get(Type::getInt32Ty(M->getContext()), it->second);
+					argsV.push_back(opCode);
+					argsV.push_back(opCount);
+					builder.CreateCall(countFunc, argsV);
+				}
+
+          		//insert the print function
+				for(BasicBlock::iterator it = block->begin(); it != block->end(); it++){
+					if(((string)it->getOpcodeName()) == "ret"){
+						// builder.SetInsertPoint(F->back().getInstList().back().getPrevNode()->getNextNode());
+						vector<Value *> argsV;
+						builder.CreateCall(printFunc, argsV);
 					}
-				}
+				} 
 			}
-
-			for (std::map<std::string,int>::iterator it = map.begin(), ie = map.end(); it != ie; it++) {
-				if (it->second != 0) {
-					errs() << it->first << "\t" << it->second << "\n";
-				}
-			}
-
-		    return false;
+			return true;
 		}
-	}; // end of struct LLVMCountDynamic
+	};  // end of struct CountDynamicinstructions
 }  // end of anonymous namespace
 
-char LLVMCountDynamic::ID = 0;
-static RegisterPass<LLVMCountDynamic> X("cse231-cdi", "Developed to test LLVM and docker",
-                             false /* Only looks at CFG */,
-                             false /* Analysis Pass */);
+char CountDynamicinstructions::ID = 0;
+static RegisterPass<CountDynamicinstructions> X("cse231-cdi", "Developed to test LLVM and docker",
+	                            false /* Only looks at CFG */,
+	                            false /* Analysis Pass */);
