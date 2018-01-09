@@ -21,8 +21,8 @@ $LLVM_BIN/opt -load $LLVM_SO/CSE231.so -cse231-bb < /tmp/test1.ll -o /tmp/test1-
 $LLVM_BIN/llvm-dis /tmp/test1-cdi.bc
 $LLVM_BIN/llvm-dis /tmp/test1-bb.bc
 
-$LLVM_BIN/clang++ /tmp/test1-cdi.ll /tmp/lib231.ll /tmp/test1-main.ll -o /tmp/cdi_test1
-$LLVM_BIN/clang++ /tmp/test1-bb.ll /tmp/lib231.ll /tmp/test1-main.ll -o /tmp/bb_test1
+$LLVM_BIN/clang++ /tmp/lib231.ll /tmp/test1-cdi.ll /tmp/test1-main.ll -o /tmp/cdi_test1
+$LLVM_BIN/clang++ /tmp/lib231.ll /tmp/test1-bb.ll /tmp/test1-main.ll -o /tmp/bb_test1
 
 /tmp/cdi_test1 2> /tmp/cdi.result
 /tmp/bb_test1 2> /tmp/bb.result
