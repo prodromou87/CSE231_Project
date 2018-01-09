@@ -11,4 +11,4 @@ OUTPUT_PATH=`pwd`/Output
 # TESTS: /tests
 # OUTPUT: /output
 
-docker run --rm -it -v ${SOURCE_PATH}:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project -v ${TESTS_PATH}:/tests -v ${OUTPUT_PATH}:/output prodromou87/llvm:3.9
+docker run --rm -it -v ${SOURCE_PATH}:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project -v ${TESTS_PATH}:/tests -v ${OUTPUT_PATH}:/output prodromou87/llvm:5.0.1
