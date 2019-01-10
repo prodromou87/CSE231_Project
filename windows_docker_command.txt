@@ -2,6 +2,6 @@ Some windows machines won't allow execution of scripts in Powershell. You will h
 
 The option --rm will automatically kill the docker image as soon as you exit it so it doesn't run in the background.
 The option -it will open an interactive session of the image.
-The -v options mount the specified folders to the mount points (path-on-host:mount-point-in-docker). Do not modify the mount points. 
+The -v options mount the specified folders to the mount points (path-on-host:mount-point-in-docker).
 
-docker run --rm -it -v //c/Users/prodr/Documents/UCSD/CSE231_TA/CSE231_Project/Output:/output -v //c/Users/prodr/Documents/UCSD/CSE231_TA/CSE231_Project/Tests:/tests -v //c/Users/prodr/Documents/UCSD/CSE231_TA/CSE231_Project/Passes:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project prodromou87/llvm:5.0.1
+docker run --rm -it -v //c/path/to/Output:/output -v //c/path/to/Passes:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project prodromou87/llvm:8

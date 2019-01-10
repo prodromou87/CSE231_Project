@@ -1,4 +1,4 @@
-add_llvm_loadable_module( LLVMTestPass
+add_llvm_library( LLVMTestPass MODULE
   TestPass.cpp
 
   PLUGIN_TOOL
