@@ -4,4 +4,4 @@ The option --rm will automatically kill the docker image as soon as you exit it 
 The option -it will open an interactive session of the image.
 The -v options mount the specified folders to the mount points (path-on-host:mount-point-in-docker).
 
-docker run --rm -it -v //c/path/to/Output:/output -v //c/path/to/Passes:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project prodromou87/llvm:8
+docker run --rm -it -v //c/path/to/Output:/output -v //c/path/to/Passes:/LLVM_ROOT/llvm/lib/Transforms/CSE231_Project prodromou87/llvm:8 /bin/bash
